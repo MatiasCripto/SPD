@@ -1,0 +1,227 @@
+//incluimos biblioteca
+#include <LiquidCrystal.h>
+
+// creamos el lcd
+/* TEAM
+Scarone Jonatan
+Vera Gonzalo
+Zalazar Carlos
+Santos Carolina
+Valdora Mauricio
+Merino Leandro
+Robles Leandro
+*/
+
+#define RS 2
+#define E 3
+#define D4 4
+#define D5 5
+#define D6 6
+#define D7 7
+#define PULSADOR 1
+#define POT A0
+#define BUZZER A5
+#define LED_ROJO 13
+#define LED_VERDE 12
+#define LED_AMARILLO 11
+#define LED_NARANJA 10
+#define LED_BLANCO 9
+#define LED_AZUL 8
+
+
+LiquidCrystal myLcd(RS,E,D4,D5,D6,D7);
+char heroe[20];
+char gema[20];
+int poderThanos;
+int poder;
+int contador = 0;
+void prenderLed(int led ,int tiempoUno, int tiempoDos);
+
+
+void setup()
+{  
+  for(int i=8; i<14;i++)
+  {
+    pinMode(i,OUTPUT);   
+  }
+  
+  pinMode(BUZZER, OUTPUT);
+  pinMode(PULSADOR, INPUT_PULLUP);
+  pinMode(POT, INPUT);
+  myLcd.begin(16,2); 
+   
+  Serial.begin(9600);
+   
+}
+
+void loop()
+{  
+  delay(150);
+  poderThanos = analogRead(POT);
+  poderThanos = map(poderThanos,0,1023,90,190);
+  Serial.println(poderThanos);
+  if(digitalRead(PULSADOR) == LOW)
+  {
+    batallas(contador);
+    if(poderThanos > poder)
+    {   
+      contador++;
+    }
+    else
+    {
+      delay(3000);
+      myLcd.clear();
+      sprintf(heroe, "A casa Thanos");
+      myLcd.setCursor(0,0);
+      myLcd.print(heroe);
+      delay(2000);
+      
+      contador = 1;
+    }   
+      
+    if(contador > 7)
+    {
+      contador = 0;
+    }
+  }  
+}
+
+int batallas(int digito)
+{
+  switch(digito)
+  {
+    case 1:
+    myLcd.clear();
+    poder = random(100,200);
+    sprintf(heroe, "Gamora: %d", poder);
+    myLcd.setCursor(0,0);
+    myLcd.print(heroe);
+    sprintf(gema, "Alma");
+    myLcd.setCursor(0,1);
+    myLcd.print(gema);
+    digitalWrite(LED_ROJO, LOW);
+    digitalWrite(LED_VERDE, LOW);
+    digitalWrite(LED_AMARILLO, LOW);
+    digitalWrite(LED_NARANJA, LOW);
+    digitalWrite(LED_BLANCO, LOW);
+    digitalWrite(LED_AZUL, LOW);
+    
+       
+    break;    
+    case 2:
+    myLcd.clear();
+    poder = random(100,200);
+    sprintf(heroe, "Loki: %d", poder);
+    myLcd.setCursor(0,0);
+    myLcd.print(heroe);
+    sprintf(gema, "Espacio");
+    myLcd.setCursor(0,1);
+    myLcd.print(gema);
+    digitalWrite(LED_ROJO, HIGH);
+    digitalWrite(BUZZER, HIGH);
+    delay(150);
+    digitalWrite(BUZZER, LOW);
+    
+    
+    break;
+    case 3:
+    myLcd.clear();
+    poder = random(100,200);
+    sprintf(heroe, "El cole: %d", poder);
+    myLcd.setCursor(0,0);
+    myLcd.print(heroe);
+    sprintf(gema, "Realidad");
+    myLcd.setCursor(0,1);
+    myLcd.print(gema);
+    digitalWrite(LED_VERDE, HIGH);   
+    digitalWrite(BUZZER, HIGH);
+    delay(150);
+    digitalWrite(BUZZER, LOW);
+    
+    break;
+    case 4:
+    myLcd.clear();
+    poder = random(100,200);
+    sprintf(heroe, "Star Lord: %d", poder);
+    myLcd.setCursor(0,0);
+    myLcd.print(heroe);
+    sprintf(gema, "Poder");
+    myLcd.setCursor(0,1);
+    myLcd.print(gema);
+    digitalWrite(LED_AMARILLO, HIGH);
+    digitalWrite(BUZZER, HIGH);
+    delay(150);
+    digitalWrite(BUZZER, LOW);
+    
+    break;
+    case 5:
+    myLcd.clear();
+    poder = random(100,200);
+    sprintf(heroe, "Dr Strange: %d", poder);
+    myLcd.setCursor(0,0);
+    myLcd.print(heroe);
+    sprintf(gema, "Tiempo");
+    myLcd.setCursor(0,1);
+    myLcd.print(gema);
+    digitalWrite(LED_NARANJA, HIGH);
+    digitalWrite(BUZZER, HIGH);
+    delay(150);
+    digitalWrite(BUZZER, LOW);
+    
+    break;
+    case 6:
+     myLcd.clear();
+    poder = random(100,200);
+    sprintf(heroe, "Vision: %d", poder);
+    myLcd.setCursor(0,0);
+    myLcd.print(heroe);
+    sprintf(gema, "Mente");
+    myLcd.setCursor(0,1);
+    myLcd.print(gema);
+    digitalWrite(LED_BLANCO, HIGH);
+    digitalWrite(BUZZER, HIGH);
+    delay(150);
+    digitalWrite(BUZZER, LOW);
+   
+    break;
+    case 7:
+    sprintf(heroe, "No me quiero ir");
+    myLcd.setCursor(0,0);
+    myLcd.print(heroe);
+    sprintf(gema, "Sr. Stark");
+    myLcd.setCursor(0,1);
+    myLcd.print(gema);
+    digitalWrite(BUZZER, HIGH);
+    delay(1000);
+    digitalWrite(BUZZER, LOW);
+    for(int i = 0; i < 10; i++)
+    {
+      prenderLed(LED_ROJO);
+      prenderLed(LED_AZUL);
+      prenderLed(LED_VERDE);
+      prenderLed(LED_AMARILLO);
+      prenderLed(LED_NARANJA);
+      prenderLed(LED_BLANCO);
+      delay(250);
+      apagarLed(LED_ROJO,100);
+      apagarLed(LED_AZUL,100);
+      apagarLed(LED_VERDE,100);
+      apagarLed(LED_AMARILLO,100);
+      apagarLed(LED_NARANJA,100);
+      apagarLed(LED_BLANCO,100);
+    }
+    
+    
+    break;
+  }
+}
+void prenderLed(int led)
+{
+  digitalWrite(led, HIGH);
+  
+}
+void apagarLed(int led ,int tiempoUno)
+{
+  digitalWrite(led, LOW);
+  delay(tiempoUno);
+}
